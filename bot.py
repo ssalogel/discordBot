@@ -3,6 +3,7 @@ import discord
 
 from localconfig import token
 from discord.ext import commands
+from Cogs.Misc import Misc
 
 logger = logging.getLogger("discord.bot")
 
@@ -29,11 +30,6 @@ async def on_ready():
     start_logging()
 
 
-@bot.command(name="ping", description="pong!",
-             brief="pong!")
-async def ping(ctx: commands.Context):
-    await ctx.send("Pong!")
-
-
 if __name__ == '__main__':
+    bot.add_cog(Misc(bot, logger))
     bot.run(token)

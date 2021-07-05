@@ -22,7 +22,7 @@ class RoleHandling(commands.Cog):
        If your prefered pronouns aren't on the list, I'm sorry. ping @ssalogel and they'll fix it!
        """, brief="To select your pronoun(s)")
     async def pronoun(self, ctx: commands.Context, pronounNumber):
-        pronoun = pronounNumber.lower
+        pronoun = pronounNumber.lower()
         if pronoun in pronouns.keys():
             pronounID = pronouns[pronoun]
             role_remove = [x for x in ctx.author.roles if x.id in pronouns.values()]

@@ -2,6 +2,7 @@ from discord.ext import commands
 from discord.utils import get
 from localconfig import pronouns
 
+
 class RoleHandling(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -30,6 +31,7 @@ class RoleHandling(commands.Cog):
             for r in role_remove:
                 await ctx.author.remove_roles(r)
             await ctx.author.add_roles(role)
+            await ctx.message.add_reaction('👍')
         else:
             await ctx.send_help()
 

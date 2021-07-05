@@ -4,6 +4,7 @@ import discord
 from localconfig import token
 from discord.ext import commands
 from Cogs.Misc import Misc
+from Cogs.RoleHandling import RoleHandling
 
 logger = logging.getLogger("discord.bot")
 
@@ -31,5 +32,6 @@ async def on_ready():
 
 
 if __name__ == '__main__':
+    bot.add_cog(RoleHandling(bot))
     bot.add_cog(Misc(bot, logger))
     bot.run(token)

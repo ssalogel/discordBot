@@ -16,9 +16,8 @@ class Misc(commands.Cog):
 
     @commands.command(name="source", description="If you want to know how I work, this is it :)",
                  brief="Here is me!!")
-    async def ping(self, ctx: commands.Context):
-        await ctx.send("""<https://github.com/ssalogel/discord-bot>
-    feel free to @ssalogel with questions!""")
+    async def source(self, ctx: commands.Context):
+        await ctx.send("<https://github.com/ssalogel/discord-bot>\nfeel free to @ssalogel with questions!")
 
     @commands.command(name="choose", description="When you can't pick, Bot can do for you!",
                  brief="When you can't pick, Bot can do for you!")

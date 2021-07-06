@@ -53,6 +53,7 @@ class RoleHandling(commands.Cog):
            Forger
            Fixer
            Ally
+           Maker
        """, brief="to get hired!")
     async def hire(self, ctx: commands.Context, choice: str):
         choice = choice.capitalize()

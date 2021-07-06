@@ -1,6 +1,22 @@
+from typing import Dict
+
 from discord.ext import commands
 from discord.utils import get
-from localconfig import pronouns
+from localconfig import pronouns, position
+
+
+async def changeRole(ctx: commands.Context, choice: str, category: Dict[str, int]):
+    if choice in category:
+        choiceID = category[choice]
+        role_remove = [x for x in ctx.author.roles if x.id in category.values()]
+        role = get(ctx.guild.roles, id=choiceID)
+        for r in role_remove:
+            await ctx.author.remove_roles(r)
+        await ctx.author.add_roles(role)
+        await ctx.message.add_reaction('👍')
+    else:
+        await ctx.send_help()
+    pass
 
 
 class RoleHandling(commands.Cog):
@@ -22,16 +38,22 @@ class RoleHandling(commands.Cog):
 
        If your prefered pronouns aren't on the list, I'm sorry. ping @ssalogel and they'll fix it!
        """, brief="To select your pronoun(s)")
-    async def pronoun(self, ctx: commands.Context, pronounNumber):
-        pronoun = pronounNumber.lower()
-        if pronoun in pronouns.keys():
-            pronounID = pronouns[pronoun]
-            role_remove = [x for x in ctx.author.roles if x.id in pronouns.values()]
-            role = get(ctx.guild.roles, id=pronounID)
-            for r in role_remove:
-                await ctx.author.remove_roles(r)
-            await ctx.author.add_roles(role)
-            await ctx.message.add_reaction('👍')
-        else:
-            await ctx.send_help()
+    async def pronoun(self, ctx: commands.Context, pronoun: str):
+        pronoun = pronoun.lower()
+        await changeRole(ctx, pronoun, pronouns)
 
+    @commands.command(name="hire", description="To get a role in the team!", help="""
+       To pick your responsabilities, go "!hire <position>" like "!hire thief" with any of the following positions:\n
+           Hacker
+           Hitter
+           Grifter
+           Thief
+           Mastermind
+           Client
+           Forger
+           Fixer
+           Ally
+       """, brief="to get hired!")
+    async def hire(self, ctx: commands.Context, choice: str):
+        choice = choice.capitalize()
+        await changeRole(ctx, choice, position)

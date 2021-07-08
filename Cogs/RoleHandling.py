@@ -15,8 +15,22 @@ async def changeRole(ctx: commands.Context, choice: str, category: Dict[str, int
         await ctx.author.add_roles(role)
         await ctx.message.add_reaction('👍')
     else:
-        await ctx.send_help()
-    pass
+        await ctx.send(ctx.command.help)
+
+
+async def toggleRole(ctx: commands.Context, choice: str, category: Dict[str, int]):
+    if choice in category:
+        roles = {x.id:x for x in ctx.author.roles}
+        choiceID = category[choice]
+
+        if choiceID in roles:
+            await ctx.author.remove_roles(roles[choiceID])
+        else:
+            await ctx.author.add_roles(get(ctx.guild.roles, id=choiceID))
+        await ctx.message.add_reaction('👍')
+
+    else:
+        await ctx.send(ctx.command.help)
 
 
 class RoleHandling(commands.Cog):
@@ -24,7 +38,7 @@ class RoleHandling(commands.Cog):
         self.bot = bot
 
     @commands.command(name="pronoun", description="To get a role denoting your pronouns!", help="""
-       To select your pronouns, please answer with "!pronoun #" where # is the number of your choice or the first element
+       To toggle a pronoun, please answer with "!pronoun #" where # is the number of your choice or the first element
        of the pronoun (ex: `!pronoun 2` or `!pronoun ze`:          
 
            1. they/them
@@ -36,11 +50,12 @@ class RoleHandling(commands.Cog):
            7. xie/xir
            8. any pronoun
 
+       You can have as many or as few of these choices as you want :)
        If your prefered pronouns aren't on the list, I'm sorry. ping @ssalogel and they'll fix it!
        """, brief="To select your pronoun(s)")
     async def pronoun(self, ctx: commands.Context, pronoun: str):
         pronoun = pronoun.lower()
-        await changeRole(ctx, pronoun, pronouns)
+        await toggleRole(ctx, pronoun, pronouns)
 
     @commands.command(name="hire", description="To get a role in the team!", help="""
        To pick your responsabilities, go "!hire <position>" like "!hire thief" with any of the following positions:\n

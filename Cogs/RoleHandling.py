@@ -37,7 +37,7 @@ class RoleHandling(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @commands.command(name="pronoun", description="To get a role denoting your pronouns!", help="""
+    @commands.command(aliases=["pronouns"], description="To get a role denoting your pronouns!", help="""
        To toggle a pronoun, please answer with "!pronoun #" where # is the number of your choice or the first element
        of the pronoun (ex: `!pronoun 2` or `!pronoun ze`:          
 

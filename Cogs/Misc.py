@@ -11,8 +11,7 @@ class Misc(commands.Cog):
         self.logger = log
         self.dice_parser = DiceParser()
 
-    @commands.command(name="ping", description="pong!",
-                 brief="pong!")
+    @commands.command(name="ping", description="pong!", brief="pong!")
     async def ping(self, ctx: commands.Context):
         await ctx.send("Pong!")
 

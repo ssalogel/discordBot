@@ -1,6 +1,8 @@
 import logging
 import discord
 
+from os import listdir, path
+from random import choice
 from localconfig import token
 from discord.ext import commands
 from Cogs.Misc import Misc
@@ -8,7 +10,10 @@ from Cogs.RoleHandling import RoleHandling
 
 logger = logging.getLogger("discord.bot")
 
-bot = commands.Bot(command_prefix="!", fetch_online_members=False, case_insensitive=True,
+
+intents = discord.Intents.default()
+intents.members = True
+bot = commands.Bot(command_prefix="!", fetch_online_members=False, case_insensitive=True, intents=intents,
                    activity=discord.Activity(type=discord.ActivityType.watching, name="for !help"))
 
 
@@ -29,6 +34,21 @@ def start_logging():
 async def on_ready():
     print(f'{bot.user} has connected to discord!')
     start_logging()
+
+
+@bot.event
+async def on_member_join(member: discord.Member):
+    channel = member.guild.system_channel
+    await channel.send(f"Hi and Welcome {member.mention}! You can look in {bot.get_channel(709178518482976860)} for "
+                       f"rules and how to get roles attributed :)\nFeel free to ask if you have any questions!")
+    await channel.send(file=get_welcome_gif())
+
+
+def get_welcome_gif() -> discord.File:
+    gif = choice(listdir("./assets"))
+    gifpath = path.join('./assets', gif)
+    with open(gifpath, 'rb') as fd:
+        return discord.File(fd)
 
 
 if __name__ == '__main__':

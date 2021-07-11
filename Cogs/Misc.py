@@ -1,4 +1,5 @@
 import logging
+import asyncio
 
 from discord.ext import commands
 from random import choice
@@ -29,3 +30,26 @@ class Misc(commands.Cog):
                       help="to roll two 6 sided dice and a 20 sided dice, plus 4, write '!roll 2d6 + 1d20 + 4'")
     async def roll(self, ctx: commands.Context, dice_expr: str):
         await ctx.send(f"You rolled : {self.dice_parser.parse_expr(dice_expr)[-1]} !")
+
+    @commands.command(description="ask Parker 2.0 to remind you of something",
+                      help="""You can ask Parker to remind you of something:
+                      `!remind 1.5h remind me to do the dishes`
+                      with time either in hours (ex: 2h), minutes (ex: 2.5m) or seconds (ex: 180s)
+                      """)
+    async def remind(self, ctx: commands.Context, time: str, *, message: str):
+        time = time.lower()
+        if time[-1] not in ['h', 'm', 's', 'min', 'sec']:
+            await ctx.send(f"I'm sorry, I don't understand {time} as a timing :(")
+            return
+        try:
+            timer = float(time[:-1])
+        except ValueError:
+            await ctx.send(f"I'm sorry, I didn't understand {time[:-1]} as a number :(")
+            return
+        if time[-1] == 'h':
+            timer *= 60 * 60
+        elif time[-1] == 'm':
+            timer *= 60
+        await ctx.message.add_reaction('👍')
+        await asyncio.sleep(timer)
+        await ctx.send(f"{ctx.author.mention}: {message}")

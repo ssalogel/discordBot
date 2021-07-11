@@ -33,6 +33,9 @@ def start_logging():
 @bot.event
 async def on_ready():
     print(f'{bot.user} has connected to discord!')
+    with open(path.join('.', 'assets', 'Parker2000.png'), 'rb') as fd:
+        avatar = fd.read()
+    await bot.user.edit(avatar=avatar)
     start_logging()
 
 

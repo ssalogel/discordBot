@@ -45,8 +45,9 @@ async def on_member_join(member: discord.Member):
 
 
 def get_welcome_gif() -> discord.File:
-    gif = choice(listdir("./assets"))
-    gifpath = path.join('./assets', gif)
+    gif_dir = "./assets/welcomeGifs"
+    gifs = choice(listdir(gif_dir))
+    gifpath = path.join(gif_dir, gifs)
     with open(gifpath, 'rb') as fd:
         return discord.File(fd)
 

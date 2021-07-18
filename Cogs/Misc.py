@@ -31,6 +31,22 @@ class Misc(commands.Cog):
     async def roll(self, ctx: commands.Context, dice_expr: str):
         await ctx.send(f"You rolled : {self.dice_parser.parse_expr(dice_expr)[-1]} !")
 
+    @commands.command(description="temperature converter",
+                      help="""`!temp 100f` or `!temp 10c`""")
+    async def temp(self, ctx: commands.Context, temp: str):
+        scale = temp[-1]
+        try:
+            temp = float(temp.strip()[:-1])
+        except ValueError:
+            await ctx.send(f"I'm sorry, I didn't understand {temp[:-1]} as a number :(")
+            return
+        if scale == 'f':
+            await ctx.send(f'{round((temp-32)/1.8)}° Celsius')
+        elif scale == 'c':
+            await ctx.send(f'{round(temp*1.8)+32}° Fahrenheit')
+        else:
+            await ctx.send("I did not understand the scale you used :(")
+
     @commands.command(description="ask Parker 2.0 to remind you of something",
                       help="""You can ask Parker to remind you of something:
                       `!remind 1.5h remind me to do the dishes`
